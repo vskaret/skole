@@ -44,3 +44,50 @@
 ; en rekke med par som slutter med '().
 
 ; 2.23
+(define (for proc items)
+  (if (null? items)
+      #t
+      (begin (proc (car items))
+        (for proc (cdr items)))))
+
+; løsningsforslag:
+(define (for2 proc lst)
+  (cond ((null? lst) 'ok)
+        (else (proc (car lst))
+              (for-each proc (cdr lst)))))
+
+; Her kunne vi brukt if istedet, men da måtte vi omsluttet else-grenen med
+; begin, siden if forventer nøyaktig tre argumenter. I cond er hver gren
+; representert som en liste, der første i lista avgjør om resten av lista skal
+; evalueres, og der resten av lista kan være vilkårlig lang, som betyr at begin
+; er implisitt i cond. 
+
+; 2.54
+(define (quale? list1 list2)
+  (define (iter list1 list2 equal)
+    (cond ((and (null? list1) (null? list2)) #t)
+          ((if (not equal) #f)
+          (if (eq? (car list1) (car list2))
+              (iter (cdr list1) (cdr list2) #t)
+              #f))))
+  (iter list1 list2 #t))
+
+(define (qualee? list1 list2)
+  (define (iter list1 list2)
+    (cond ((and (null? list1) (null? list2)) #t)
+          ((not (eq? (car list1) (car list2))) #f)
+          ((eq? (car list1) (car list2)) (iter (cdr list1) (cdr list2)))))
+  (iter list1 list2))
+
+(define (elaque? list1 list2)
+  (cond ((and (null? list1) (null? list2)) #t)
+        ((not (eq? (car list1) (car list2))) #f)
+        ((eq? (car list1) (car list2)) (elaque? (cdr list1) (cdr list2)))))
+
+; løsningsforslag:
+(define (equalz? a b)
+  (or (eq? a b)
+      (and (pair? a) (pair? b)
+           (equal? (car a) (car b))
+           (equal? (cdr a) (cdr b)))))
+; må også dekke tilfellene der input ikke er lister
