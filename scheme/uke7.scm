@@ -118,3 +118,48 @@
 ; error ikke prosedyre
 
 ; 1.42
+(define (compose proc1 proc2)
+  (lambda (z) (proc1 (proc2 z))))
+
+; reduce def
+;(define (reduce proc init items)
+;  (if (null? items)
+;      init
+;      (proc (car items)
+;            (reduce proc init (cdr items)))))
+
+(define (ireduce proc init items)
+  (define (iter items result)
+    (if (null? items)
+        result
+        (iter (cdr items)
+              (proc (car items) result))))
+  (iter items init))
+
+; ekstraoppgave 1 (fra løsningsforslag, aner ikke hva som skjer)
+(define (reduce f lst)
+  (if (null? (cdr lst))
+      (car lst)
+      (f (car lst) (reduce f (cdr lst)))))
+
+;(define (compose f g)
+;  (lambda (x) (f (apply g x))))
+
+(define (comp f . procs)
+  (reduce compose (cons f procs)))
+
+(define (range start stop)
+    (define (iter b items)
+      (if (< b start)
+          items
+          (iter (- b 1) (cons b items))))
+    (iter stop '()))
+
+; 1.43 
+(define (repeated proc n)
+  (lambda (z)
+    (if (= n 1)
+        (proc z)
+        ((compose proc (repeated proc (- n 1))) z))))
+
+(define (square x) (* x x))
