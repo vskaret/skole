@@ -1,0 +1,64 @@
+2.1 Teori
+a) instanceof brukes for å sjekke hva slags klasse variabelen/objektet er.
+Man bør unngå å bruke det når man i stedet kan bruke polymorfi, f.eks. ved 
+å ha en skrivUt-funksjon. Man bør bruke det når man har beslutninger som 
+avhenger av klassetype: if (b instanceof Personbil)
+
+b) Ja, siden objektet har informasjonen som er nødvendig for at det skal bli 
+et superklasseobjekt.
+
+c) Man kan aldri konvertere fra en superklasse til en subklasse fordi objektet 
+mangler informasjon.
+
+d) Komposisjon (klasser som kaller metoder fra andre klasser) kan ofte brukes i 
+stedet for arv.
+
+Arv fungerer dårlig når vi vil arve bare noen egenskaper eller når vi trenger 
+å arve fra flere klasser (Java støtter ikke multippel arv, i motsetning til 
+bl.a. C++, men det er en del problemer forbundet med multippel arv). 
+
+2.2 Kodeanalyse
+a)  1 Lovlig: lager et Y-objekt og så caster det til et X-objekt
+    2 Lovlig
+    3 Ikke lovlig: X kan mangle data som er i Y
+    4 Lovlig
+    5 Lovlig
+    6 Ikke lovlig: X kan mangle data som er i Z FEIL
+
+b) True: 2, 3, 4, 5, 7
+
+c)  (A) Lovlig: peker nedover så går greit 
+    (B) Ikke lovlig: vil få runtime error fordi man prøver å peke oppover ved å
+    caste en Student til BachelorStudent
+    (C) Ikke lovlig: samme som (B) - Student-objekt mangler BachelorStudent-data
+    (D) Ikke lovlig: castinga vil gå greit, men peker så oppover med Student 
+    -> Person
+    (E) Usikker - Ikke lovlig: etter castinga blir objektet sett på som Student
+    -objekt så vil fortsatt være oppoverpeking
+
+2.4 Arv av variabler
+Alle vil ha tilgang på like mange siden ingen variabler er definert som private.
+
+2.6 Overstyrende arvinger
+a) Programmet vil printe ut "B" to ganger pga polymorfi
+b) Override
+c) Vil få error - FEIL: fortsatt printe ut "B" to ganger
+d) A vil bli skrevet ut, men error pga B mangler metoden???? - A blir skrevet
+ut på begge
+
+Forskjell på polymorfi og override:
+Polymorfi: virtuelle metoder. Metoder i subklassene (med samme navn som metoder
+i superklassen) endres og vil som oftest returnerer forskjellige verdier
+Override: overstyre metode(r) i superklassen
+
+2.7 Konstruktører
+a) Først vil konstruktøren til Skyskraper kjøres som i første linje av
+metoden vil kalle på konstruktøren til superklassen som er bygning og den vil
+kjøres, etter det vil konstruktøren til Skyskraper kjøres.
+b) Nå avhenger rekkefølgen av hvor super() legges inn i konstruktøren FEIL:
+super() må uansett legges først, så det blir ingen forskjell
+c) Bygning-konstruktøren må kalles slik super(bruttoAreal);
+d) Nei, superklassens konstruktører kan kun kalles med super.
+
+2.8 Abstrakte klasser
+
