@@ -1,10 +1,12 @@
 public class MinMaksBeholder<E extends Comparable<E>> {
-    private E[] beholder;
+    //private E[] beholder;
+    private Object[] beholder;
     final private int minstPos;
     final private int storstPos;
 
     public MinMaksBeholder() {
-        beholder = (E[]) new Person[2]; 
+        //beholder = (E[]) new Object[2];           // runtime exception
+        beholder = new Object[2];
         minstPos = 0;
         storstPos = 1;
 
@@ -24,10 +26,10 @@ public class MinMaksBeholder<E extends Comparable<E>> {
     }
 
     public E hentUtMinst() {
-        return beholder[minstPos];
+        return (E) beholder[minstPos];
     }
 
     public E hentUtStorst() {
-        return beholder[storstPos];
+        return (E) beholder[storstPos];
     }
 }
