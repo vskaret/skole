@@ -90,7 +90,7 @@
 
 
 ; 1.32
-; a
+; a - abstrahert sum/produkt/etc prosedyre
 (define (accumulate combiner null-value term a next b)
   (if (> a b)
       null-value
@@ -118,6 +118,7 @@
 ; error ikke prosedyre
 
 ; 1.42
+; utfører to prosedyrer på z
 (define (compose proc1 proc2)
   (lambda (z) (proc1 (proc2 z))))
 
@@ -155,11 +156,47 @@
           (iter (- b 1) (cons b items))))
     (iter stop '()))
 
-; 1.43 
-(define (repeated proc n)
+; 1.43
+; repeterer en prosedyre på z n ganger
+(define (repeated-bad proc n)
   (lambda (z)
     (if (= n 1)
         (proc z)
         ((compose proc (repeated proc (- n 1))) z))))
 
 (define (square x) (* x x))
+
+(define (repeated proc n)
+  (if (= 1 n)
+      proc
+      (compose proc (repeated proc (- n 1)))))
+
+; 1.44
+(define (average args)
+  (/ (ireduce + 0 args)
+     (length args)))
+
+(define (my-average args)
+  (define (sum lst)
+    (if (null? lst)
+        0
+        (+ (car lst) (sum (cdr lst)))))
+  (/ (sum args)
+     (length args)))
+
+(define dx 0.000001)
+; returnerer en prosedyre som smoother f
+(define (smooth proc)
+  (lambda (x)
+    (/ ( + (proc (- x dx))
+           (proc x)
+           (proc (+ x dx)))
+       3)))
+
+(define (smooth-n-fold proc n)
+  ((repeated smooth n) proc))
+; ((smooth (smooth square)) 5)
+; ((smooth (smooth (smooth square))) 5)
+; ((smooth (smooth (smooth (smooth square)))) 5)
+; etc
+  
