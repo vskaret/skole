@@ -1,3 +1,53 @@
+; 2.17
+(define (last-pair1 items)
+  (define (iter count items)
+    (if (= (length items) 1)
+        items
+        (iter (length (cdr items)) (cdr items))))
+  (iter 0 items))
+
+; løsningsforslag
+(define (last-pair items)
+  (if (null? (cdr items))
+      items
+      (last-pair (cdr items))))
+
+; 2.18
+(define (remove-last items)
+  (if (null? (cdr items))
+      '()
+      (cons (car items) (remove-last (cdr items)))))
+  
+(define (reverse2 items)
+  (if (null? items)
+      '()
+      (cons (car (last-pair items))
+            (reverse2 (if (null? (cdr items))
+                          '()
+                          (remove-last items))))))
+
+(define (reverse3 items)
+  (define (removelast items)
+    (if (null? (cdr items))
+        '()
+        (cons (car items) (removelast (cdr items)))))
+  (if (null? items)
+      '()
+      (cons (car (last-pair items)) (reverse3 (removelast items)))))
+         
+; 2.21
+(define (square x)
+  (* x x))
+
+(define (square-list1 items)
+  (if (null? items)
+      '()
+      (cons (square (car items)) (square-list1 (cdr items)))))
+
+(define (square-list2 items)
+  (map square items))
+
+
 ; 2.22
 (define square
   (lambda (x) (* x x)))
