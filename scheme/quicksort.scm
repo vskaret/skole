@@ -1,3 +1,5 @@
+; scheme r5rs standard specification: http://www.schemers.org/Documents/Standards/R5RS/HTML/
+
 (define (filter pred lst)
   (cond ((null? lst) '())
         ((pred (car lst)) (cons (car lst)

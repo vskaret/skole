@@ -199,4 +199,57 @@
 ; ((smooth (smooth (smooth square))) 5)
 ; ((smooth (smooth (smooth (smooth square)))) 5)
 ; etc
-  
+
+
+; evig loop
+(define (evig-sum . args)
+  (display args) (newline)
+  (if (null? args)
+      0
+      (+ (car args)
+         (evig-sum (cdr args)))))
+
+; (evig-sum 1 2 3 5 6 7)
+; (+ 1 (evig-sum ((2 3 5 6 7)))
+; (+ 1 (+ '()? evig-sum (())))
+; (+ 1 (+ '()? (+ '()? evig-sum (()))))
+; . args gjør alle argumentene til en liste, derfor
+; det etter andre kjøring blir en liste med et element
+; og (cdr (args)) henter ut den tomme listen
+
+(define (sum . args)
+  (display args) (newline)
+  (if (null? args)
+      0
+      (+ (car args)
+         (apply sum (cdr args)))))
+; apply pakker ut alle elementene i listen for en prosedyre, eks:
+; (apply + '(1 2 3 4)) -> 10
+; (sum 1 2 3 5 6 7) -> 24
+
+
+; accumulate2
+(define (accumulate2 proc init lst)
+  (if (null? lst)
+      init
+      (proc (car lst)
+            (accumulate2 proc init (cdr lst)))))
+; 2.33
+(define (my-map p sequence)
+  (accumulate2 (lambda (x y) (cons (p x) y)) '() sequence))
+
+(define (my-append seq1 seq2)
+  (accumulate2 cons seq2 seq1))
+
+(define (my-length sequence)
+  (accumulate2 (lambda (x y) (+ 1 y)) 0 sequence))
+
+; 2.36
+(define (accumulate-n proc init seqs)
+  (if (null? seqs)
+      '()
+      (cons (accumulate2 proc init (car seqs))
+            (accumulate-n proc init (cdr seqs)))))
+
+; square
+(define (square x) (* x x))
