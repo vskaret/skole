@@ -253,3 +253,32 @@
 
 ; square
 (define (square x) (* x x))
+
+; 2.37
+(define (dot-product v w)
+  (accumulate2 + 0 (map * v w)))
+
+; (map * '(1 2 3) '(4 5 6))
+; (4 10 18)
+
+
+; (matrix-*-vector '((1 2 3) (4 5 6)) '(7 8 9))
+; (cons (dot-product '(1 2 3) '(7 8 9)) (dot-product '((4 5 6)) '(7 8 9))
+; (cons (dot-product '(1 2 3) '(7 8 9)) cons (dot-product '(4 5 6) '(7 8 9)) (dot-product '() '(7 8 9)))
+
+; (matrix-*-vector '((1 4 6) (2 5 7) (3 6 8) (4 6 9)) '(1 2 3))
+; (dot-product '(1 4 6) '(1 2 3))
+; (dot-product '(2 5 7) '(1 2 3))
+; (dot-product '(3 6 8) '(1 2 3))
+; (dot-product '(4 6 9) '(1 2 3))
+(define (matrix-*-vector m v)
+  (map (lambda (w) (dot-product w v)) m))
+
+; feil
+(define (transpose mat)
+  (accumulate2 cons '() mat))
+
+; (transpose '((1 2 3) (4 5 6)))
+; ((1 4), (2 5), (3 6))
+
+
