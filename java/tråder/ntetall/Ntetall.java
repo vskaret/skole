@@ -10,24 +10,31 @@ public class Ntetall {
         t1.start(); */
 
         // Oppgave C
+        Monitor m = new Monitor();                  // maa opprette monitor forst for alle traadene skal ha samme
+        for (int start = 0; start < 10; start++) {
+            new Thread(new OppgaveD(10, start, 50, m)).start();
+        }
+        /* maa vaere samme monitor for alle traadene
         Thread[] traader = new Thread[10];
         for (int i = 0; i < traader.length; i++) {
-            traader[i] = new Thread(new OppgaveD(10, i, 20, new Monitor()));
+            traader[i] = new Thread(new OppgaveD(10, i, 20, new Monitor())).start();
         }
-
+        */
+        /*
         for (int i = 0; i < traader.length; i++) {
             traader[i].start();
         }
+        */
     }
 }
 
 class Monitor {
-    private Lock laas = new ReentrantLock();
-    private Condition kanFortsette = laas.newCondition();
-    private int nesteTall = 0;
+    Lock laas = new ReentrantLock();
+    Condition kanFortsette = laas.newCondition();
+    int nesteTall = 0;
 
     public void skrivTall(int tall) {
-
+        laas.lock();
         try {
             while (tall != nesteTall) {
                 // monitor.await();    // condition som styrer await
